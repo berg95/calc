@@ -1,57 +1,84 @@
 #include <iostream>
 #include <string>
-using namespace std;
+
+int number()
+{
+  int num;
+  std::cout << "Enter number: ";
+  std::cin >> num;
+
+  return num;
+}
 
 // function for user to choose operator
-string getop()
+std::string getop()
 {
-  string op;
-  cout << "Enter an operator (+ - / *): ";
-  cin >> op;
+  // initialize variable storing the operator, and variable storing check value.
+  std::string op;
+  int isValid = 1; // true by default
+
+  // user input, with built in error hadling
+  std::cout << "Enter an operator (+ - / *): ";
+  std::cin >> op;
+
+  // error handling
+  if (op != "+" && op != "-" && op != "/" && op != "*")
+  {
+    isValid = 0; // sets to false
+  }
+
+  // loop runs until the input is valid
+  while (isValid == 0)
+  {
+    std::cout << "Invalid operator, please enter a valid operator: ";
+    std::cin >> op;
+    if (op == "+" || op == "-" || op == "/" || op == "*")
+      isValid = 1;
+  }
 
   return op;
 }
 
 int main()
 {
-  // define variables
-  int a, b;
+  // initialize loop, instead of goto statements
+  bool doAgain = true;
+  while (doAgain == true)
+  {
+    // define variables
+    int num1, num2;
+    int result = 0;
 
-  start: // restore point
+    // user shooses the first number
+    num1 = number();
 
-  // user shooses the first number
-  cout << "Enter a number: ";
-  cin >> a;
+    // run getop() function to set op to operator of choice
+    std::string op = getop();
 
-  // run getop() function to set op to operator of choice
-  string op = getop();
+    // user chooses the second number
+    num2 = number();
 
-  // user chooses the second number
-  cout << "Enter a second number: ";
-  cin >> b;
+    // distinguish operators and solve equation
+    if (op == "+") // Addition
+      result = num1 + num2;
+    if (op == "/") // Division
+      result = num1 / num2;
+    if (op == "*") // Multiplication
+      result = num1 * num2;
+    if (op == "-") // Subtraction
+      result = num1 - num2;
+    
+    std::cout << result << '\n'; // print result
 
-  // distinguish operators and solve equation
-  if (op == "+") // Addition
-    cout << a + b << '\n';
-  if (op == "/") // Division
-    cout << a / b << '\n';
-  if (op == "*")  // Multiplication
-    cout << a * b << '\n';
-  if (op == "-") // Subtraction
-    cout << a - b << '\n';
-  
-  // Initialize choice variable
-  string choice;
-  cout << "Do you want to do another calculation? (Y,n) ";
-  cin >> choice;
+    // Initialize choice variable
+    std::string choice;
+    std::cout << "Do you want to do another calculation? (Y,n) ";
+    std::cin >> choice;
 
-  // process choice
-  if (choice == "n")
-    goto end;
-  else
-    goto start;
-
+    // process choice
+    if (choice == "n")
+      doAgain = false;
+  }
   // terminate function
-  end:
   return 0;
 }
